@@ -1,0 +1,112 @@
+exp_name: "stage2"
+device: "cuda"
+batch_size: 2
+max_len: 250
+log_interval: 100
+save_freq: 5
+
+
+epochs_1st: 500
+epochs_2nd: 3000
+
+
+pretrained_model: ""
+first_stage_path: "output/stage1/first_stage.pth"
+load_only_params: false
+second_stage_load_pretrained: true
+speaker_finetune: false
+
+
+data_params:
+  root_path: "preprocessed_data/wavs"
+  feature_root_path: "preprocessed_data/features"
+  train_data: "Data/train.txt"
+  val_data: "Data/val.txt"
+  OOD_data: "Data/OOD_texts.txt"
+  min_length: 50
+
+
+val_wav_path: "preprocessed_data/wavs"
+
+
+
+ASR_config: "Utils/ASR/config.yml"
+ASR_path: "Utils/ASR/epoch_00080.pth"
+F0_path: "Utils/JDC/bst.t7"
+PLBERT_dir: "Utils/PLBERT/"
+
+
+model_params:
+  hidden_dim: 512
+  dim_in: 64
+  style_dim: 128
+  audio_emotion_dim: 512
+  n_layer: 3
+  n_mels: 80
+  n_token: 178
+  max_conv_dim: 512
+  max_dur: 50
+  multispeaker: true
+  dropout: 0.2
+
+
+  decoder:
+    type: "hifigan"
+    upsample_initial_channel: 512
+    upsample_rates: [10, 5, 3, 2]
+    upsample_kernel_sizes: [20, 10, 6, 4]
+    resblock_kernel_sizes: [3, 7, 11]
+    resblock_dilation_sizes: [[1, 3, 5], [1, 3, 5], [1, 3, 5]]
+
+  
+  diffusion:
+    embedding_mask_proba: 0.1
+    transformer:
+      num_layers: 3
+      num_heads: 8
+      head_features: 64
+      multiplier: 2
+    dist:
+      estimate_sigma_data: true
+      mean: -3.0
+      std: 1.0
+      sigma_data: 0.5762297656351087
+
+
+  slm:
+    model: "wavlm-base-plus"
+    sr: 16000
+    hidden: 768
+    nlayers: 13
+    initial_channel: 64
+
+loss_params:
+  TMA_epoch: 20
+  diff_epoch: 0
+  joint_epoch: 500
+  lambda_mel: 5.0
+  lambda_gen: 1.0
+  lambda_slm: 1.0
+  lambda_mono: 1.0
+  lambda_s2s: 1.0
+  lambda_F0: 1.0
+  lambda_norm: 1.0
+  lambda_dur: 1.0
+  lambda_ce: 200.0
+  lambda_sty: 1.0
+  lambda_diff: 1.0
+
+
+optimizer_params:
+  lr: 0.0001
+  bert_lr: 1.0e-05
+  ft_lr: 1.0e-05
+
+preprocess_params:
+  sr: 24000
+  spect_params:
+    n_fft: 2048
+    win_length: 1200
+    hop_length: 300
+
+random_ref: true

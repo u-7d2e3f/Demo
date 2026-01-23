@@ -1,0 +1,40 @@
+path:
+  root_json: "Dataset/data/dataset.json"
+  feature_root: "Dataset/preprocessed_data/features"
+  base_output: "EmotionGateformer/output"
+  ckpt_subdir: "checkpoints"
+  log_subdir: "logs"
+  
+
+train:
+  batch_size: 4
+  learning_rate: 1.e-4
+  epochs: 100
+  top_k: 3
+  save_step: 10
+  print_step: 10
+
+
+model:
+  d_speaker: 192      
+  d_face: 1024       
+  d_env: 1024        
+  d_text: 1024     
+  d_arc: 1024        
+  d_ref: 1280        
+  d_out: 1280    
+  d_model: 512     
+  nhead: 8           
+  dim_feedforward: 2048 
+  dropout: 0.1       
+  max_seq_len: 2000  
+  
+  num_layers_temp: 6 
+  num_layers_feat: 6 
+  num_layers_dec: 6 
+
+
+loss:
+  w_ccc: 1.0
+  w_delta: 3.0
+  w_huber: 1.0
