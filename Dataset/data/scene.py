@@ -45,8 +45,8 @@ def fast_cut_video_gpu(input_file, output_file, start_input, end_input):
         print(f"Error: {output_file} | {e.stderr.decode()}")
 
 if __name__ == "__main__":
-    input_movie = "movies/Zootopia/Zootopia.mp4"
-    output_folder = "movies/Zootopia/Scenes"
+    input_movie = ""
+    output_folder = ""
     
     time_segments = [
         ("", "")

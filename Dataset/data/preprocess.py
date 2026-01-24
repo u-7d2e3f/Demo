@@ -83,7 +83,7 @@ def process_and_overwrite_video(video_path):
 
 if __name__ == "__main__":
 
-    scenes_dir = "m"
+    scenes_dir = ""
     vocal_tmp_dir = "temp_vocals"
     
     processed_files = load_processed_list()
