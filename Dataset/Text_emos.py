@@ -72,19 +72,14 @@ class UnifiedEmotionExtractor:
         pil_images = self.extract_and_resize_frames(video_path, max_frames=6)
         if pil_images is None: return "Error: Video unreadable"
         
-        scene_desc = context_info.get("scene_desc", "")
         char_id = context_info.get("char_id", "")
-        utt_text = context_info.get("text", "")
+        scene_desc = context_info.get("scene_desc", "")
         
         if task_type == "scene":
-            prompt = f"### [Scene Context]\n{scene_desc}\n\n### [Task]\nAnalyze visual atmosphere."
+            prompt = f"### [Scene Context]\n{scene_desc}\n\n### [Task]\nAnalyze the visual atmosphere and environmental setting of this scene."
         else:
-            prompt = (f"### [Character Context]\n"
-                    f"- Scene Context: {scene_desc}\n"
-                    f"- Target Speaker: {char_id}\n"
-                    f"- Script: \"{utt_text}\"\n"
-                    f"### [Task]\n"
-                    f"Describe the facial expressions and emotions of {char_id}.")
+            prompt = (f"### [Task]\n"
+                    f"Focusing on the character {char_id}, describe their facial expressions and micro-expressions in detail.")
 
         content = [{"type": "image", "image": img} for img in pil_images]
         content.append({"type": "text", "text": prompt})
@@ -125,17 +120,18 @@ def batch_process(base_out="preprocessed_data/features"):
 
         for scene in tqdm(scene_data.get("scenes", []), desc=f"Processing {movie_path}"):
             bg_context, scene_id = scene.get("scene_description", ""), scene["scene_id"]
+            
+            character_map = {char["char_id"]: char.get("persona", "") for char in scene.get("characters", [])}
 
             for utt in scene.get("utterances", []):
                 char_id, idx = utt["char_id"], f"{utt['utterance_index']:03d}"
                 video_path = os.path.join("data", utt["video_path"])
                 if_face = utt.get("if_face", True)
+                persona = character_map.get(char_id, "")
                 
                 context_info = {
                     "scene_desc": bg_context,
                     "char_id": char_id,
-                    "text": utt.get("text", ""),
-                    "if_face": if_face
                 }
                 
                 prefix = f"{scene_id}@{char_id}"
@@ -150,7 +146,9 @@ def batch_process(base_out="preprocessed_data/features"):
 
                 if all(os.path.exists(p) for p in out_paths.values()): continue
 
-                np.save(out_paths["text"], extractor.get_1024d_vector(f"Context: {bg_context} Script: {utt.get('text', '')}"))
+                text_input = f"Persona: {persona} | Context: {bg_context} | Script: {utt.get('text', '')}"
+                np.save(out_paths["text"], extractor.get_1024d_vector(text_input))
+
                 np.save(out_paths["arc"], extractor.get_1024d_vector(utt.get("director_arc", "")))
 
                 si_desc = extractor.generate_visual_description(video_path, "scene", context_info=context_info)
@@ -161,7 +159,6 @@ def batch_process(base_out="preprocessed_data/features"):
                     face_vec = extractor.get_1024d_vector(fi_desc)
                 else:
                     face_vec = np.zeros(1024)
-                
                 np.save(out_paths["face"], face_vec)
 
 if __name__ == "__main__":

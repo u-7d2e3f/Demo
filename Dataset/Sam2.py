@@ -28,7 +28,7 @@ class SAM2VideoIsolator:
         if GlobalHydra.instance().is_initialized():
             GlobalHydra.instance().clear()
         
-        print(f"🚀 Loading from config directory: {self.config_dir}")
+        print(f"Loading from config directory: {self.config_dir}")
         with initialize_config_dir(config_dir=self.config_dir, version_base=None):
             predictor = build_sam2_video_predictor(
                 self.config_name, 
