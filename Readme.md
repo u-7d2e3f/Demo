@@ -125,7 +125,7 @@ preprocessed_data/
 ├── features/                  # 特征向量
 │   ├── VA_features/           # 帧级面部情感向量
 │   ├── arc/                   # 导演指导情感向量
-│   ├── extrated_embedding_V2C_gray/ # 唇部向量 
+│   ├── extrated_embedding_gray/ # 唇部向量 
 │   ├── face/     # 面部情感向量 
 │   ├── scene/    # 氛围情感向量
 │   ├── text/     # 文本情感向量

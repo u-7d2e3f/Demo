@@ -141,7 +141,7 @@ class FilePathDataset(torch.utils.data.Dataset):
             ref_spk = ref_bn.split('_')[0]
             ref_t_v = torch.from_numpy(np.load(osp.join(self.feature_root_path, "timbre", f"{ref_spk}-timbre-{ref_bn}.npy"))).float()
          
-        lip = self._load_npy("extrated_embedding_V2C_gray", f"{speaker}-face-{basename}.npy", dim=512)
+        lip = self._load_npy("extrated_embedding_gray", f"{speaker}-face-{basename}.npy", dim=512)
         v_emo = self._load_npy("VA_features", f"{speaker}-feature-{basename}.npy", dim=256)
         atm = self._load_npy("scene", f"{speaker}-scene-{basename}.npy", dim=1024) 
 
