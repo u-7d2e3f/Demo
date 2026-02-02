@@ -1,16 +1,17 @@
 path:
   root_json: "Dataset/data/dataset.json"
   feature_root: "Dataset/preprocessed_data/features"
+  ref_footage_root: "EmotionGateformer/ref_footage"
   base_output: "EmotionGateformer/output"
   ckpt_subdir: "checkpoints"
   log_subdir: "logs"
   
 
 train:
-  batch_size: 4
+  batch_size: 32
   learning_rate: 1.e-4
   epochs: 100
-  top_k: 3
+  top_k: 2
   save_step: 10
   print_step: 10
 
