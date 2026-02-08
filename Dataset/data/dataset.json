@@ -1,0 +1,18 @@
+{
+  "dataset_name": "Dubber-100-Movies",
+  "total_movies": 100,
+  "movies": [
+    {
+      "movie_id": "Zootopia1",
+      "movie_title": "Zootopia",
+      "dataset_path": "movies/example/Zootopia_dataset.json",
+      "train": [
+        "Zootopia003", "Zootopia015", "Zootopia008", "Zootopia001", 
+        "Zootopia012", "Zootopia007", "Zootopia018", "Zootopia005", 
+        "Zootopia010", "Zootopia002", "Zootopia014"
+      ],
+      "val": ["Zootopia006", "Zootopia017"],
+      "test": ["Zootopia004", "Zootopia009", "Zootopia011", "Zootopia013", "Zootopia016"]
+    }
+  ]
+}

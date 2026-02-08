@@ -16,18 +16,16 @@ from transformers import RobertaTokenizer, RobertaForSequenceClassification
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class DynamicRAGManager:
-    def __init__(self, rag_root, device, chunk_size=10000):
+    def __init__(self, rag_root, device):
         self.rag_root = rag_root 
         self.device = device
-        self.chunk_size = chunk_size
         self._load_gallery()
 
     def _load_gallery(self):
         self.arc_features, self.emo_file_names = [], []
         arc_dir = os.path.join(self.rag_root, "arc")
         if not os.path.exists(arc_dir): os.makedirs(arc_dir)
-        files = sorted(os.listdir(arc_dir))
-        for f in files:
+        for f in sorted(os.listdir(arc_dir)):
             if f.endswith(".npy"):
                 vec = np.load(os.path.join(arc_dir, f)).squeeze()
                 self.arc_features.append(torch.from_numpy(vec).float())
@@ -35,50 +33,22 @@ class DynamicRAGManager:
         self.arc_matrix = torch.stack(self.arc_features).to(self.device) if self.arc_features else torch.empty(0, 1024).to(self.device)
 
     def update_database(self, arc_vec, emo_vec, base_id, scene_id, c_id):
-        emo_filename = f"{scene_id}@{c_id}-emotion-{base_id}.npy"
         arc_path = os.path.join(self.rag_root, "arc", f"{scene_id}@{c_id}-arc-{base_id}.npy")
-        emo_path = os.path.join(self.rag_root, "emotion", emo_filename)
+        emo_path = os.path.join(self.rag_root, "emotion", f"{scene_id}@{c_id}-emotion-{base_id}.npy")
         os.makedirs(os.path.dirname(arc_path), exist_ok=True)
         os.makedirs(os.path.dirname(emo_path), exist_ok=True)
         np.save(arc_path, arc_vec.cpu().numpy())
         np.save(emo_path, emo_vec.cpu().numpy())
-        
-        new_arc = arc_vec.view(1, 1024).float().to(self.device)
-        if self.arc_matrix.size(0) == 0:
-            self.arc_matrix = new_arc
-        else:
-            self.arc_matrix = torch.cat([self.arc_matrix, new_arc], dim=0)
-        self.emo_file_names.append(emo_filename)
+        self._load_gallery() 
 
-    def retrieve_top_k(self, queries, top_k):
-        num_samples = self.arc_matrix.size(0)
-        batch_size = queries.size(0)
-        q = queries.view(batch_size, -1)
-        q_norm = F.normalize(q, p=2, dim=1)
-
-        if num_samples == 0:
-            return torch.zeros(batch_size, top_k, 1280).to(self.device)
-
-        all_sims = []
-        for i in range(0, num_samples, self.chunk_size):
-            end = min(i + self.chunk_size, num_samples)
-            chunk_norm = F.normalize(self.arc_matrix[i:end], p=2, dim=1)
-            all_sims.append(torch.mm(q_norm, chunk_norm.t()))
-        
-        total_sims = torch.cat(all_sims, dim=1)
-        actual_k = min(top_k, num_samples)
-        top_indices = torch.topk(total_sims, k=actual_k, dim=1).indices
-
-        batch_refs = []
-        for b in range(batch_size):
-            refs = []
-            for idx in top_indices[b]:
-                path = os.path.join(self.rag_root, "emotion", self.emo_file_names[idx])
-                refs.append(torch.from_numpy(np.load(path)).float().to(self.device).squeeze())
-            while len(refs) < top_k:
-                refs.append(torch.zeros(1280).to(self.device))
-            batch_refs.append(torch.stack(refs))
-        return torch.stack(batch_refs)
+    def retrieve_top_k(self, current_arc_vec, top_k):
+        if self.arc_matrix.size(0) == 0: return torch.zeros(top_k, 1280).to(self.device)
+        query = F.normalize(current_arc_vec.view(1, 1024), p=2, dim=1)
+        sims = torch.mm(query, F.normalize(self.arc_matrix, p=2, dim=1).t()).squeeze(0)
+        top_idx = torch.topk(sims, min(top_k, self.arc_matrix.size(0))).indices
+        refs = [torch.from_numpy(np.load(os.path.join(self.rag_root, "emotion", self.emo_file_names[i]))).float().to(self.device).squeeze() for i in top_idx]
+        while len(refs) < top_k: refs.append(torch.zeros(1280).to(self.device))
+        return torch.stack(refs)
 
 class TextEmotionExtractor:
     def __init__(self, model_path="Dataset/emos/emotion-english-roberta-large"):
@@ -141,17 +111,32 @@ def run_inference(args):
             target_score, is_satisfied, total_attempts = 4.5, False, 0
             last_arc, last_aud, feedback, history = None, None, None, []
 
-            while not is_satisfied and target_score >= 1.0:
+            while not is_satisfied:
                 for attempt_at_level in range(3):
                     if total_attempts == 0:
-                        dir_res = director.run_task("INITIAL", utt['text'], c_id, char_persona, u_idx, ts, if_face=utt.get('if_face', True), scene_desc=scene_data['scene_description'], video_path=v_p)
+                        existing_arc = utt.get('director_arc')
+                        if existing_arc and existing_arc not in ["FAILED", ""]:
+                            arc_text = existing_arc
+                            dir_res = {"Director Arc": arc_text}
+                        else:
+                            dir_res = director.run_task("INITIAL", utt['text'], c_id, char_persona, u_idx, ts, 
+                                                       if_face=utt.get('if_face', True), 
+                                                       scene_desc=scene_data['scene_description'], 
+                                                       video_path=v_p)
+                            arc_text = dir_res.get("Director Arc", "Neutral.")
+                            utt['director_arc'] = arc_text 
+                            with open(dataset_path, 'w', encoding='utf-8') as f:
+                                json.dump(movie_data, f, ensure_ascii=False, indent=2)
                     else:
-                        dir_res = director.run_task("REVISION", utt['text'], c_id, char_persona, u_idx, ts, if_face=utt.get('if_face', True), scene_desc=scene_data['scene_description'], video_path=v_p, audio_path=last_aud, feedback=feedback, last_direct=last_arc)
+                        dir_res = director.run_task("REVISION", utt['text'], c_id, char_persona, u_idx, ts, 
+                                                   if_face=utt.get('if_face', True), 
+                                                   scene_desc=scene_data['scene_description'], 
+                                                   video_path=v_p, audio_path=last_aud, 
+                                                   feedback=feedback, last_direct=last_arc)
+                        arc_text = dir_res.get("Director Arc", "Neutral.")
                     
-                    arc_text = dir_res.get("Director Arc", "Neutral.")
                     arc_t = extractor.get_1024d_vector(arc_text)
                     ref_t = rag_engine.retrieve_top_k(arc_t, top_k=full_cfg['train'].get('top_k', 2)).unsqueeze(0).unsqueeze(0)
-
                     a_e_t = gf.arc_norm(gf.arc_proj(arc_t))
                     r_fused_t = gf._fusion_ref_dynamic(ref_t, gf.context_to_query(torch.cat([f_e_all[:, t:t+1, :], t_e_all[:, t:t+1, :], a_e_t], dim=-1)))
                     feat_out_t = gf.feature_aggregator(gf.feature_encoder(gf._add_positional_encoding(torch.stack([f_e_all[:, t:t+1, :], e_e_all[:, t:t+1, :], t_e_all[:, t:t+1, :], r_fused_t, a_e_t], dim=2).view(1, 5, 512))).flatten(start_dim=1).unsqueeze(1))
@@ -175,8 +160,6 @@ def run_inference(args):
 
                     rev = reviewer.run_consultant_evaluation(None, scene_data['scene_description'], char_persona, c_id, utt['text'], curr_aud_p, last_aud, v_p, total_attempts > 0)
                     feedback = f"SQC:{rev.get('sqc_report')} | SQA:{rev.get('sqa_report')} | SQI:{rev.get('sqi_suggestions')}"
-
-    
                     score_res = director.run_task(task_type="SCORING",script_text=utt['text'],char_id=c_id,char_persona=char_persona,utt_idx=u_idx,timestamp_info=ts,scene_desc=scene_data['scene_description'],video_path=v_p,audio_path=curr_aud_p,feedback=feedback)
                     c_score = score_res.get("Comprehensive_Score", 0.0)
                     
@@ -190,10 +173,12 @@ def run_inference(args):
 
                     if c_score >= target_score:
                         is_satisfied = True
-                        if target_score >= 4.8: rag_engine.update_database(arc_t.squeeze(), pred_1280.squeeze(), base_id, args.scene_id,c_id)
+                        if target_score >= 4.5: rag_engine.update_database(arc_t.squeeze(), pred_1280.squeeze(), base_id, args.scene_id,c_id)
                         break 
                 
-                if not is_satisfied: target_score -= 0.5
+                if not is_satisfied: 
+                    target_score -= 0.5
+                    if target_score < 1.0: break
 
             shutil.copy(last_aud, os.path.join(args.save_path, f"{base_id}_final.wav"))
             with open(final_log_file, 'a', encoding='utf-8') as f:
@@ -202,13 +187,13 @@ def run_inference(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--api_key", type=str, default="",required=True)
+    parser.add_argument("--api_key", type=str, default="sk-lhiymlfpnqvvgpwgwtdfktnkyjyghoixawtwglkyfomfpluc")
     parser.add_argument("--gate_config", default="EmotionGateformer/Configs/Config.yml")
     parser.add_argument("--pro_config", default="ProDubber/output/stage2/config.yml")
     parser.add_argument("--gate_ckpt", default="EmotionGateformer/output/checkpoints/gateformer_ep10.pth")
     parser.add_argument("--pro_ckpt", default="ProDubber/output/stage2/ckpt/epoch_2nd_210.pth")
     parser.add_argument("--master_json", default="Dataset/data/dataset.json")
-    parser.add_argument("--movie_id", default="KFP1")
-    parser.add_argument("--scene_id", default="KFP001")
-    parser.add_argument("--save_path", default="results/KFP001")
+    parser.add_argument("--movie_id", default="Zootopia")
+    parser.add_argument("--scene_id", default="Zootopia004")
+    parser.add_argument("--save_path", default="results/Zootopia004")
     run_inference(parser.parse_args())
