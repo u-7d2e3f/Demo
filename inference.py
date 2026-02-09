@@ -187,11 +187,11 @@ def run_inference(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--api_key", type=str, default="sk-lhiymlfpnqvvgpwgwtdfktnkyjyghoixawtwglkyfomfpluc")
+    parser.add_argument("--api_key", type=str, default="")
     parser.add_argument("--gate_config", default="EmotionGateformer/Configs/Config.yml")
     parser.add_argument("--pro_config", default="ProDubber/output/stage2/config.yml")
-    parser.add_argument("--gate_ckpt", default="EmotionGateformer/output/checkpoints/gateformer_ep10.pth")
-    parser.add_argument("--pro_ckpt", default="ProDubber/output/stage2/ckpt/epoch_2nd_210.pth")
+    parser.add_argument("--gate_ckpt", default="")
+    parser.add_argument("--pro_ckpt", default="")
     parser.add_argument("--master_json", default="Dataset/data/dataset.json")
     parser.add_argument("--movie_id", default="Zootopia")
     parser.add_argument("--scene_id", default="Zootopia004")

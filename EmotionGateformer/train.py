@@ -19,7 +19,7 @@ def load_config(config_path):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Training for EmotionGateformer")
-    parser.add_argument("--config", type=str, default="Config.yml", help="Path to the yaml config")
+    parser.add_argument("--config", type=str, default="Configs/Config.yml", help="Path to the yaml config")
     return parser.parse_args()
 
 def setup_logger(log_dir):
@@ -121,19 +121,15 @@ def train():
 
             epoch_loss += loss.item()
 
-            if i % cfg['train']['print_step'] == 0:
-                logger.info(f"Epoch [{epoch}] Step [{i}] | Loss: {loss.item():.4f} | Huber: {details['huber']:.4f} | CCC: {details['ccc']:.4f} | Delta: {details['delta']:.4f}")
+            if (i + 1) % cfg['train']['print_step'] == 0:
+                logger.info(f"Epoch [{epoch}]  | Loss: {loss.item():.4f} | Huber: {details['huber']:.4f} | CCC: {details['ccc']:.4f} | Delta: {details['delta']:.4f}")
                 step = epoch * len(train_loader) + i
                 for k, v in details.items():
                     writer.add_scalar(f"Loss/{k}", v, step)
-        
-        avg_loss = epoch_loss / len(train_loader)
-        writer.add_scalar("Loss/Epoch_Avg", avg_loss, epoch)
 
         if (epoch + 1) % cfg['train']['save_step'] == 0:
             save_path = os.path.join(ckpt_dir, f"gateformer_ep{epoch+1}.pth")
             torch.save(model.state_dict(), save_path)
-            logger.info(f"Saved Checkpoint: {save_path}")
 
     writer.close()
     logger.info("Training Complete!")
