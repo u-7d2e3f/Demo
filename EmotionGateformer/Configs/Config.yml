@@ -5,7 +5,6 @@ path:
   base_output: "EmotionGateformer/output"
   ckpt_subdir: "checkpoints"
   log_subdir: "logs"
-  
 
 train:
   batch_size: 32
@@ -14,7 +13,8 @@ train:
   top_k: 2
   save_step: 10
   print_step: 10
-
+  adam_betas: [0.9, 0.98] 
+  adam_eps: 1e-9         
 
 model:
   d_speaker: 192      
@@ -29,11 +29,9 @@ model:
   dim_feedforward: 2048 
   dropout: 0.1       
   max_seq_len: 2000  
-  
   num_layers_temp: 6 
   num_layers_feat: 6 
   num_layers_dec: 6 
-
 
 loss:
   w_ccc: 1.0

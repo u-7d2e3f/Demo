@@ -89,7 +89,7 @@ def train():
         w_huber=cfg['loss']['w_huber']
     ).to(device)
     
-    optimizer = AdamW(model.parameters(), lr=float(cfg['train']['learning_rate']))
+    optimizer = AdamW(model.parameters(),lr=float(cfg['train']['learning_rate']),betas=tuple(cfg['train']['adam_betas']),  eps=float(cfg['train']['adam_eps']))
     
     model.train()
     for epoch in range(cfg['train']['epochs']):

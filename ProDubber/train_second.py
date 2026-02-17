@@ -155,10 +155,10 @@ def main(config_path):
     optimizer = build_optimizer({key: model[key].parameters() for key in model}, scheduler_params_dict=scheduler_params_dict, lr=optimizer_params.lr)
     
     for g in optimizer.optimizers['bert'].param_groups:
-        g['betas'] = (0.9, 0.99); g['lr'] = optimizer_params.bert_lr; g['initial_lr'] = optimizer_params.bert_lr; g['min_lr'] = 0; g['weight_decay'] = 0.01
+        g['betas'] = (0.9, 0.98); g['eps'] = 1e-9; g['lr'] = optimizer_params.bert_lr; g['initial_lr'] = optimizer_params.bert_lr; g['min_lr'] = 0; g['weight_decay'] = 0.01
     for module in ["decoder", "style_encoder"]:
         for g in optimizer.optimizers[module].param_groups:
-            g['betas'] = (0.0, 0.99); g['lr'] = optimizer_params.ft_lr; g['initial_lr'] = optimizer_params.ft_lr; g['min_lr'] = 0; g['weight_decay'] = 1e-4
+            g['betas'] = (0.0, 0.98); g['eps'] = 1e-9; g['lr'] = optimizer_params.ft_lr; g['initial_lr'] = optimizer_params.ft_lr; g['min_lr'] = 0; g['weight_decay'] = 1e-4
         
     if load_pretrained: model, optimizer, start_epoch, iters = load_checkpoint(model, optimizer, config['pretrained_model'], load_only_params=config.get('load_only_params', True))
         
