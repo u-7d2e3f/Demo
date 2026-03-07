@@ -118,7 +118,7 @@ Extract frame-level lip movements and facial dimensional emotions through pixel-
 <div style="display: flex; align-items: center; justify-content: center; gap: 30px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center; padding: 20px;">
   <div style="display: flex; flex-direction: column; align-items: center;">
     <h3 style="color: #333; margin-bottom: 12px;">Input Video</h3>
-    <video src="./video/demo.mp4" width="300" controls 
+    <video src="video/demo.mp4" width="300" controls 
            style="border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1);"></video>
   </div>
   <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -127,15 +127,16 @@ Extract frame-level lip movements and facial dimensional emotions through pixel-
   </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <h3 style="color: #333; margin-bottom: 12px;">Output Video</h3>
-    <video src="./video/demooutput.mp4" width="300" controls 
+    <video src="video/demooutput.mp4" width="300" controls 
            style="border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1);"></video>
   </div>
 </div>
-|                         Input Video                         |                 |                         Output Video                         |
-| :---------------------------------------------------------: | :-------------: | :----------------------------------------------------------: |
-| <video src="./video/demo.mp4" width="350" controls></video> | **SAM2** <br> ➔ | <video src="./video/demooutput.mp4" width="350" controls></video> |
 
-<video src="./video/demo.mp4" width="350" controls></video>
+|                        Input Video                        |                 |                         Output Video                         |
+| :-------------------------------------------------------: | :-------------: | :----------------------------------------------------------: |
+| <video src="video/demo.mp4" width="350" controls></video> | **SAM2** <br> ➔ | <video src="video/demooutput.mp4" width="350" controls></video> |
+
+<video src="video/demo.mp4" width="350" controls></video>
 
 
 - **Extracted Content**:
