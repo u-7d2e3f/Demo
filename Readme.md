@@ -117,7 +117,7 @@ Extract frame-level lip movements and facial dimensional emotions through pixel-
 -  **Key Technology**: Use **SAM 2.1** for full-video pixel-level isolation to ensure features are extracted only from the target character, eliminating background interference.
 
 <video src="video/demo.mp4" width="350" controls></video>
-
+![](video/demo.mp4)
 
 - **Extracted Content**:
   - **Lip Embedding**: Lip movement features based on S3FD + lrw_resnet18_mstcn_video.
