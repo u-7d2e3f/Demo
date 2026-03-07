@@ -115,26 +115,6 @@ Extract frame-level lip movements and facial dimensional emotions through pixel-
 
 - **Models**: **SAM 2.1** & **S3FD** &  **EmoNet** & **ResNet-18** 
 -  **Key Technology**: Use **SAM 2.1** for full-video pixel-level isolation to ensure features are extracted only from the target character, eliminating background interference.
-<div style="display: flex; align-items: center; justify-content: center; gap: 30px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center; padding: 20px;">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <h3 style="color: #333; margin-bottom: 12px;">Input Video</h3>
-    <video src="video/demo.mp4" width="300" controls 
-           style="border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1);"></video>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-    <h2 style="margin: 0; color: #007bff; font-weight: 700;">SAM2</h2>
-    <span style="font-size: 32px; margin-top: 8px; color: #666;">➔</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <h3 style="color: #333; margin-bottom: 12px;">Output Video</h3>
-    <video src="video/demooutput.mp4" width="300" controls 
-           style="border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1);"></video>
-  </div>
-</div>
-
-|                        Input Video                        |                 |                         Output Video                         |
-| :-------------------------------------------------------: | :-------------: | :----------------------------------------------------------: |
-| <video src="video/demo.mp4" width="350" controls></video> | **SAM2** <br> ➔ | <video src="video/demooutput.mp4" width="350" controls></video> |
 
 <video src="video/demo.mp4" width="350" controls></video>
 
@@ -148,15 +128,15 @@ Extract frame-level lip movements and facial dimensional emotions through pixel-
 ```
 preprocessed_data/
 ├── features/                
-│   ├── VA_features/           # EmoVA Facial Affect Vectors
-│   ├── arc/                   # Director Guidance Vectors
+│   ├── VA_features/             # EmoVA Facial Affect Vectors
+│   ├── arc/                     # Director Guidance Vectors
 │   ├── extrated_embedding_gray/ # Lip embeddings Vectors
-│   ├── face/                  # Facial Affect vectors 
-│   ├── scene/                 # Environment Atmosphere vectors
-│   ├── text/                  # Textual Sentiment vectors
-│   ├── emotion/               # Acoustic Sentiment vectors
-│   └── timbre/                # Speaker Timbre vectors
-└── wavs/                      # Speech files
+│   ├── face/                    # Facial Affect vectors 
+│   ├── scene/                   # Environment Atmosphere vectors
+│   ├── text/                    # Textual Sentiment vectors
+│   ├── emotion/                 # Acoustic Sentiment vectors
+│   └── timbre/                  # Speaker Timbre vectors
+└── wavs/                        # Speech files
 ```
 
 
