@@ -131,12 +131,12 @@ preprocessed_data/
 ├── features/                
 │   ├── VA_features/             # EmoVA Facial Affect Vectors
 │   ├── arc/                     # Director Guidance Vectors
-│   ├── extrated_embedding_gray/ # Lip embeddings Vectors
-│   ├── face/                    # Facial Affect vectors 
-│   ├── scene/                   # Environment Atmosphere vectors
-│   ├── text/                    # Textual Sentiment vectors
-│   ├── emotion/                 # Acoustic Sentiment vectors
-│   └── timbre/                  # Speaker Timbre vectors
+│   ├── extrated_embedding_gray/ # Lip Embeddings Vectors
+│   ├── face/                    # Facial Affect Vectors
+│   ├── scene/                   # Environment Atmosphere Vectors
+│   ├── text/                    # Textual Sentiment Vectors
+│   ├── emotion/                 # Acoustic Sentiment Vectors
+│   └── timbre/                  # Speaker Timbre Vectors
 └── wavs/                        # Speech files
 ```
 
