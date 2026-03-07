@@ -94,7 +94,7 @@ Use large language models and encoders to extract deep description features of t
 
 - **Models**: **Emotion-RoBERTa-Large** & **VideoLLaMA3**
 - **Extracted Content**:
-  - **Textual Sentiment** & **Director Guidance **: Use Emotion-RoBERTa-Large to extract semantic-level emotional representations of the dialogue text and director's instructions.
+  - **Textual Sentiment** & **Director Guidance**: Use Emotion-RoBERTa-Large to extract semantic-level emotional representations of the dialogue text and director's instructions.
   - **Environment Atmosphere**: Use VideoLLaMA3 to analyze the environmental atmosphere in the video, generate a description, and map it into an emotion vector.
   - **Facial Affect**: Use VideoLLaMA3 to deeply analyze the character's facial micro-expressions, generate a description, and map it into an emotion vector.
 -  `python Text_emos.py`
