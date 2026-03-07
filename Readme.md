@@ -88,7 +88,7 @@ movies/
 
 To improve training efficiency and reduce VRAM usage, we adopt an **Offline Extraction** strategy. Before training begins, all multimodal materials will be mapped into high-dimensional feature vectors and saved in `.npy` format.
 
-### 1) Semantic and Visual Description Features 
+### 1) Multimodal Affective Encoding
 
 Use large language models and encoders to extract deep description features of the dialogue semantics and video frames.
 
@@ -109,7 +109,7 @@ Extract the character's inherent timbre features and the emotional expressivenes
   - **Acoustic Sentiment**: Use Wav2Vec2-Bert 2.0 to extract the deep semantic hidden states of the audio, and then input them into the UnifiedVoice module of IndexTTS2 to extract acoustic emotion vectors.
 -  `python Timbre.py`
 
-### 3) Visual Synchronization and Dimensional Emotion 
+### 3) Frame-Level Visual Feature Extraction
 
 Extract frame-level lip movements and facial dimensional emotions through pixel-level tracking technology.
 
