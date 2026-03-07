@@ -3,7 +3,7 @@
   "total_movies": 100,
   "movies": [
     {
-      "movie_id": "Zootopia1",
+      "movie_id": "Zootopia",
       "movie_title": "Zootopia",
       "dataset_path": "movies/example/Zootopia_dataset.json",
       "train": [
