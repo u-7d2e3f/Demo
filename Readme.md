@@ -118,7 +118,7 @@ Extract frame-level lip movements and facial dimensional emotions through pixel-
 
 | Input Video | Output Video |
 | :---: | :---: |
-| ![](movies/XXX/video/demo.mp4) | ![](movies/XXX/video/demooutput.mp4) |
+| ![](video/demo.mp4) | ![](video/demooutput.mp4) |
 
 <video src="video/demo.mp4" width="350" controls></video>
 
