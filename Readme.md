@@ -120,7 +120,6 @@ Extract frame-level lip movements and facial dimensional emotions through pixel-
 | :---: | :---: | :---: |
 | ![](index/demo.gif) | **SAM2** <br> ➔ | ![](index/demooutput.gif) |
 
-<video src="index/demo.mp4" width="350" controls></video>
 
 
 - **Extracted Content**:
