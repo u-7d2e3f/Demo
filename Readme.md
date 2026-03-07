@@ -120,8 +120,6 @@ Extract frame-level lip movements and facial dimensional emotions through pixel-
 | :---: | :---: | :---: |
 | ![](index/demo.gif) | **SAM2** <br> ➔ | ![](index/demooutput.gif) |
 
-
-
 - **Extracted Content**:
   - **Lip Embedding**: Lip movement features based on S3FD + lrw_resnet18_mstcn_video.
   - **EmoVA Facial Affect**: Facial dimensional emotion vectors based on S3FD + EmoNet.
