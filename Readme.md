@@ -1,136 +1,180 @@
 [![Project Page](https://img.shields.io/badge/Project-Webpage-2ecc71?style=flat-square&logo=googlechrome&logoColor=white)](https://dar.dub-demopage.workers.dev)
 
+# Dataset
 
-# 数据集
+We provide a sample dataset for reference. The complete dataset, along with the feature vectors required for training, will be fully open-sourced in the future.
 
-去除场景中的非主要说话人的语句，比如周围的欢呼声，一些无关紧要的路人的声音等语句
+```
+cd Dataset/data/
+dataset.json
 
+cd movies/example
+example_dataset.json
+```
 
-## 🛠️ 数据预处理
+## 🛠️ Data Preprocessing
 
-### 第一步：自动检测并插入新场景 (Auto Scene Insertion)
+### 1) Auto-detect and Insert New Scenes 
 
-运行自动化脚本检测 `XXX_dataset.json` 中已有的场景数量，并自动生成下一个场景的模板。
+Run the automated script to detect the number of existing scenes in `XXX_dataset.json` and automatically generate a template for the next scene.
 
-- **命令**：`python auto_insert_scene.py`
+- `python auto_insert_scene.py`
 
-### 第二步：场景视频切片 (Scene Extraction)
+### 2) Scene Video Extraction 
 
-根据 JSON 定义的时间戳，从电影原片中提取出完整的场景片段。
+Extract complete scene clips from the original movie based on the timestamps defined in the JSON.
 
-- **命令**：`python scene.py`
+- `python scene.py`
 
-### 第三步：音频降噪与背景音去除 (Audio Denoising)
+### 3) Audio Denoising and Background Music Removal 
 
-为了消除电影背景音乐和音效对模型训练的干扰，我们采用 **UVR-MDX-NET-Voc_FT** 模型对原始素材进行处理。
+To eliminate the interference of movie background music and sound effects on model training, we use the **UVR-MDX-NET-Voc_FT** model to process the raw materials.
 
-- **命令**：`python preprocess.py`
+- `python preprocess.py`
 
-### 第四步：文本标注与时间戳获取 (Text Annotation & Alignment)
+### 4) Text Annotation and Timestamp Acquisition 
 
-在获取视频对应的台词及其精确时间戳时，我们提供以下两种灵活的方案：
+We provide the following two flexible options for obtaining the dialogue and exact timestamps corresponding to the video:
 
-1.针对拥有官方校对字幕的素材，可以直接解析 SRT 文件。
+1. For materials with officially proofread subtitles, SRT files can be parsed directly.
+2. For materials without SRT files, or for custom data construction, we provide an alternative method:
+   Use **Faster-Whisper-large-v3** for high-precision transcription and enable Voice Activity Detection to ensure timestamps exclude silent parts.
 
-2.对于无SRT文件的素材，或者自定义数据构建，我们提供另一种方法：
+- `python preprocess_txt.py`
 
-​     使用 **Faster-Whisper-large-v3** 进行高精度转写并开启 Voice Activity Detection以确保时间戳剔除静音部分。
+### 5) Manual Correction of Characters and Faces 
 
-- **命令**：`python preprocess_txt.py`
+You need to manually open `XXX_dataset.json` and verify the following information against the video footage:
 
-### 第五步：手动修正角色与面部 (Manual Annotation) 
+- **Character ID**: Change "Unknown" to the actual character.
+- **Face Detection**: Confirm whether the character's face is in the frame during that line of dialogue.
+- **Scene Description**: Background description of the scene in the clip, as well as a description of the characters in the scene.
+- **Character Voice Timbre**: Manually insert the character's voice timbre for the scene.
 
-需手动打开 `XXX_dataset.json`，根据视频画面核对以下信息：
+### 6) Audio and Video Stabilization Slicing 
 
-- **角色 ID (`char_id`)**：将 "Unknown" 更改为实际角色。
-- **面部检测 (`if_face`)**：确认该句对白时，角色的脸部是否在镜头内。
-- **场景描述 (`scene_description`)**：该片段场景的背景描述，以及场景中的人物描述。
-- **角色音色**：将场景中角色音色手动插入
+Run `preprocess_wav.py` to physically cut the audio and video for each annotated line of dialogue, generating the final training units.
 
-### 第六步：音视频稳定化切片 (Final Segmenting)
+- `python preprocess_wav.py`
 
-运行 `preprocess_wav.py` 对标注好的每一句台词的音频和视频进行物理切割，生成最终的训练单元。
+### 7) Emotion VAD Feature Tagging 
 
-- **命令**：`python preprocess_wav.py`
+Use the **MERaLiON-SER** model to assist in annotating the Valence/Arousal/Dominance values of the audio.
 
-### 第七步：情感 VAD 特征标注 (Emotion Tagging)
+- `python preprocess_VAD.py`
 
-使用**MERaLiON-SER**模型辅助标注音频的 Valence/Arousal/Dominance 数值。
+### 8) Director Arc Extraction 
 
-- **命令**：`python preprocess_VAD.py`
+For the training set, use the **Qwen3-Omni** multimodal large model to comprehensively analyze the video footage, audio track, and contextual plot of the entire scene to generate standardized guidance instructions.
 
-### 第八步：导演指令特征提取 (Director's Arc Extraction)
+- `python preprocess_arc.py`
 
-用 **Qwen3-Omni** 多模态大模型，综合分析整个场景的视频画面、音频轨道以及上下文剧情，生成标准化的指导指令
+### ⚠️⚠️⚠️ Be sure to manually verify the correctness of the data annotations after completion.
 
-- **命令**：`python preprocess_arc.py`
-
-### ⚠️⚠️⚠️非常重要， 务必在标注完成后人工检差数据标注的正确性
-
-
-
-### 📁 目录结构参考
+### 📁 Directory Structure Reference
 
 ```
 movies/
-├── XXX/                  # 电影数据集文件夹
-│   ├── XXX_dataset.json  # 核心标注文件
-│   ├── Scenes/           # 场景完整片段
-│   ├── wavs/             # 最终音频切片 (16kHz)
-│   └── video/            # 最终视频切片 (25fps)
-└── preprocess_*.py       # 自动化处理脚本
+├── XXX/                  # Movie dataset directory
+│   ├── XXX_dataset.json  # Core annotation file
+│   ├── Scenes/           # Complete scene clips
+│   ├── wavs/             # Final audio segments (24kHz)
+│   └── video/            # Final video segments (25fps)
+└── preprocess_*.py       # Automated processing scripts
 ```
 
 
+## 🛠️ Offline Feature Extraction
 
-## 🛠️ 特征离线化提取
+To improve training efficiency and reduce VRAM usage, we adopt an **Offline Extraction** strategy. Before training begins, all multimodal materials will be mapped into high-dimensional feature vectors and saved in `.npy` format.
 
-为了提高训练效率并降低显存占用，我们采用**离线化提取（Offline Extraction）**策略。在训练开始前，所有多模态素材将被映射为高维特征向量并保存为 `.npy` 格式。
+### 1) Semantic and Visual Description Features 
 
-### 1. 语义与视觉描述特征 (Semantic & Visual Descriptions)
+Use large language models and encoders to extract deep description features of the dialogue semantics and video frames.
 
-利用大语言模型与编码器提取台词语义及画面的深度描述特征。
+- **Models**: **Emotion-RoBERTa-Large** & **VideoLLaMA3**
+- **Extracted Content**:
+  - **Textual Sentiment** & **Director Guidance **: Use Emotion-RoBERTa-Large to extract semantic-level emotional representations of the dialogue text and director's instructions.
+  - **Environment Atmosphere**: Use VideoLLaMA3 to analyze the environmental atmosphere in the video, generate a description, and map it into an emotion vector.
+  - **Facial Affect**: Use VideoLLaMA3 to deeply analyze the character's facial micro-expressions, generate a description, and map it into an emotion vector.
+-  `python Text_emos.py`
 
-- **模型**: **Emotion-RoBERTa-Large** & **VideoLLaMA3**
-- **提取内容**:
-  - **Textual Sentiment**: 利用Emotion-RoBERTa-Large提取文本台词和导演指导在语义层面的情感表征。
-  - **Environment Atmosphere**: 利用 VideoLLaMA3 分析视频中的环境氛围并生成描述，随后映射为情感向量。
-  - **Facial Affect**: 利用 VideoLLaMA3 深度解析角色面部微表情并生成描述，随后映射为情感向量。
-- **命令**: `python Text_emos.py`
+### 2) Speaker Timbre and Acoustic Emotion 
 
-### 2. 音频音色与声学情感 (Audio Timbre & Emotion)
+Extract the character's inherent timbre features and the emotional expressiveness vectors in the speech.
 
-提取角色的固有音色特征及语音中的情感表现力向量。
+- **Models**: **CAMPPlus** & **Wav2Vec2-Bert** & **UnifiedVoice**
+- **Extracted Content**:
+  - **Speaker Timbre**: Extract speaker timbre embeddings based on the CAMPPlus module inside IndexTTS2.
+  - **Acoustic Sentiment**: Use Wav2Vec2-Bert 2.0 to extract the deep semantic hidden states of the audio, and then input them into the UnifiedVoice module of IndexTTS2 to extract acoustic emotion vectors.
+-  `python Timbre.py`
 
-- **模型**: **CAMPPlus** & **Wav2Vec2-Bert** & **UnifiedVoice**
-- **提取内容**:
-  - **Timbre Vector**: 基于 IndexTTS2 内部的 CAMPPlus 模块，提取 说话人音色嵌入。
-  - **Acoustic Sentiment**: 利用 Wav2Vec2-Bert 2.0 提取音频的深层语义隐藏状态（Hidden States），随后将其输入 IndexTTS2 的 UnifiedVoice 模块，提取声学情感向量
-- **命令**: `python Timbre.py`
+### 3) Visual Synchronization and Dimensional Emotion 
 
-### 3. 视觉同步与维度情感 (Visual Sync & VA Features)
+Extract frame-level lip movements and facial dimensional emotions through pixel-level tracking technology.
 
-通过像素级追踪技术提取帧级的唇部运动与面部维度情感。
+- **Models**: **SAM 2.1** & **S3FD** &  **EmoNet** & **ResNet-18** 
+-  **Key Technology**: Use **SAM 2.1** for full-video pixel-level isolation to ensure features are extracted only from the target character, eliminating background interference.
+<div style="display: flex; align-items: center; justify-content: center; gap: 30px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center; padding: 20px;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <h3 style="color: #333; margin-bottom: 12px;">Input Video</h3>
+    <video src="./video/demo.mp4" width="300" controls 
+           style="border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1);"></video>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <h2 style="margin: 0; color: #007bff; font-weight: 700;">SAM2</h2>
+    <span style="font-size: 32px; margin-top: 8px; color: #666;">➔</span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <h3 style="color: #333; margin-bottom: 12px;">Output Video</h3>
+    <video src="./video/demooutput.mp4" width="300" controls 
+           style="border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1);"></video>
+  </div>
+</div>
 
-- **模型**: **SAM 2.1** & **S3FD** &  **EmoNet** & **ResNet-18** 
-- **关键技术**: 使用 **SAM 2.1** 进行全视频像素级隔离，确保特征仅提取自目标角色，排除背景干扰。
-- **提取内容**:
-  - **Lip Embedding**: 基于 S3FD+ lrw_resnet18_mstcn_video 的唇部运动特征。
-  - **VA Features**: 基于 S3FD + EmoNet 的面部维度情感向量。
-- **命令**: `python EmoVA_Lipreading.py`
+- **Extracted Content**:
+  - **Lip Embedding**: Lip movement features based on S3FD + lrw_resnet18_mstcn_video.
+  - **EmoVA Facial Affect**: Facial dimensional emotion vectors based on S3FD + EmoNet.
+-  `python EmoVA_Lipreading.py`
 
-### 📁 目录结构参考
+### 📁 Directory Structure Reference
 ```
 preprocessed_data/
-├── features/                  # 特征向量
-│   ├── VA_features/           # 帧级面部情感向量
-│   ├── arc/                   # 导演指导情感向量
-│   ├── extrated_embedding_gray/ # 唇部向量 
-│   ├── face/     # 面部情感向量 
-│   ├── scene/    # 氛围情感向量
-│   ├── text/     # 文本情感向量
-│   ├── emotion/  # 音频情感向量
-│   └── timbre/   #音色
-└──wavs/      # 语音
+├── features/                
+│   ├── VA_features/           # EmoVA Facial Affect Vectors
+│   ├── arc/                   # Director Guidance Vectors
+│   ├── extrated_embedding_gray/ # Lip embeddings Vectors
+│   ├── face/                  # Facial Affect vectors 
+│   ├── scene/                 # Environment Atmosphere vectors
+│   ├── text/                  # Textual Sentiment vectors
+│   ├── emotion/               # Acoustic Sentiment vectors
+│   └── timbre/                # Speaker Timbre vectors
+└── wavs/                      # Speech files
 ```
+
+
+# Dependencies
+
+```
+pip3 install -r requirements.txt
+```
+
+# Training
+
+We only need to train the two stages of Actor：
+
+**Macro-Contextual Level (EmotionGateformer）** 
+
+```
+python EmotionGateformer/train.py --config EmotionGateformer/Configs/Config.yml
+```
+
+ **Micro-Performance Level (Dubber)**:  Adopts ProDubber's two-stage training architecture
+
+```
+python ProDubber/train_first.py -p Configs/config_stage1.yml
+python ProDubber/train_second.py -p Configs/config.yml
+```
+
+
 

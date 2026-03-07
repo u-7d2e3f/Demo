@@ -5,7 +5,7 @@
     {
       "movie_id": "Zootopia",
       "movie_title": "Zootopia",
-      "dataset_path": "movies/example/Zootopia_dataset.json",
+      "dataset_path": "movies/example/example_dataset.json",
       "train": [
         "Zootopia003", "Zootopia015", "Zootopia008", "Zootopia001", 
         "Zootopia012", "Zootopia007", "Zootopia018", "Zootopia005", 
