@@ -1,4 +1,4 @@
-[![Project Page](https://img.shields.io/badge/Project-Webpage-2ecc71?style=flat-square&logo=googlechrome&logoColor=white)]([DAR-Dub: A Multi-Agent Director-Actor-Reviewer Framework for Scenario-level Movie Dubbing](https://dar.dub-demopage.workers.dev/))
+[![Project Page](https://img.shields.io/badge/Project-Webpage-2ecc71?style=flat-square&logo=googlechrome&logoColor=white)](https://dar.dub-demopage.workers.dev)
 
 
 # 数据集
