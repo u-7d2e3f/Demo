@@ -131,11 +131,17 @@ Extract frame-level lip movements and facial dimensional emotions through pixel-
            style="border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1);"></video>
   </div>
 </div>
+|                         Input Video                         |                 |                         Output Video                         |
+| :---------------------------------------------------------: | :-------------: | :----------------------------------------------------------: |
+| <video src="./video/demo.mp4" width="350" controls></video> | **SAM2** <br> ➔ | <video src="./video/demooutput.mp4" width="350" controls></video> |
+
+<video src="./video/demo.mp4" width="350" controls></video>
+
 
 - **Extracted Content**:
   - **Lip Embedding**: Lip movement features based on S3FD + lrw_resnet18_mstcn_video.
   - **EmoVA Facial Affect**: Facial dimensional emotion vectors based on S3FD + EmoNet.
--  `python EmoVA_Lipreading.py`
+- `python EmoVA_Lipreading.py`
 
 ### 📁 Directory Structure Reference
 ```
