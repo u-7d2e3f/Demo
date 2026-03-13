@@ -44,12 +44,14 @@ def build_split_isolated_rag(master_json, arc_dir, output_dir, top_k=100):
 
     for i, q_file in enumerate(tqdm(query_files, desc="Generating indices")):
         q_basename = q_file.split("-arc-")[1].replace('.npy', '')
+        q_char_id = q_file.split('@')[1].split('-')[0]
         
         scores = sim_matrix[i].copy()
         
-        if q_file in gallery_files:
-            self_idx_in_gallery = gallery_files.index(q_file)
-            scores[self_idx_in_gallery] = -1.0
+        for g_idx, g_file in enumerate(gallery_files):
+            g_char_id = g_file.split('@')[1].split('-')[0]
+            if q_char_id == g_char_id:
+                scores[g_idx] = -1e9
 
         top_indices = np.argsort(scores)[::-1][:top_k]
         

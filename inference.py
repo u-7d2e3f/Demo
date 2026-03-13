@@ -40,13 +40,18 @@ class DynamicRAGManager:
         np.save(arc_path, arc_vec.cpu().numpy())
         np.save(emo_path, emo_vec.cpu().numpy())
         self._load_gallery() 
-
-    def retrieve_top_k(self, current_arc_vec, top_k):
+    
+    def retrieve_top_k(self, current_arc_vec, top_k, c_id):
         if self.arc_matrix.size(0) == 0: return torch.zeros(top_k, 1280).to(self.device)
         query = F.normalize(current_arc_vec.view(1, 1024), p=2, dim=1)
         sims = torch.mm(query, F.normalize(self.arc_matrix, p=2, dim=1).t()).squeeze(0)
+        mask_tag = f"@{c_id}-"
+        for i, fname in enumerate(self.emo_file_names):
+            if mask_tag in fname:
+                sims[i] = -1e9  
         top_idx = torch.topk(sims, min(top_k, self.arc_matrix.size(0))).indices
         refs = [torch.from_numpy(np.load(os.path.join(self.rag_root, "emotion", self.emo_file_names[i]))).float().to(self.device).squeeze() for i in top_idx]
+        
         while len(refs) < top_k: refs.append(torch.zeros(1280).to(self.device))
         return torch.stack(refs)
 
@@ -136,7 +141,7 @@ def run_inference(args):
                         arc_text = dir_res.get("Director Arc", "Neutral.")
                     
                     arc_t = extractor.get_1024d_vector(arc_text)
-                    ref_t = rag_engine.retrieve_top_k(arc_t, top_k=full_cfg['train'].get('top_k', 2)).unsqueeze(0).unsqueeze(0)
+                    ref_t = rag_engine.retrieve_top_k(arc_t, top_k=full_cfg['train'].get('top_k', 2), c_id=c_id).unsqueeze(0).unsqueeze(0)
                     a_e_t = gf.arc_norm(gf.arc_proj(arc_t))
                     r_fused_t = gf._fusion_ref_dynamic(ref_t, gf.context_to_query(torch.cat([f_e_all[:, t:t+1, :], t_e_all[:, t:t+1, :], a_e_t], dim=-1)))
                     feat_out_t = gf.feature_aggregator(gf.feature_encoder(gf._add_positional_encoding(torch.stack([f_e_all[:, t:t+1, :], e_e_all[:, t:t+1, :], t_e_all[:, t:t+1, :], r_fused_t, a_e_t], dim=2).view(1, 5, 512))).flatten(start_dim=1).unsqueeze(1))
