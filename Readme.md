@@ -2,7 +2,7 @@
 
 # Dataset
 
-We provide a sample of the DAR-Animation Dataset. The complete dataset (~120 hours, 100 movies), along with the high-dimensional feature vectors required for training, will be fully open-sourced upon the formal publication of our work.
+We provide a sample of the DAR-Animation Dataset for reference. The complete set of annotations and high-dimensional feature vectors  for the DAR-Animation Dataset (~120 hours, 100 movies) will be fully open-sourced upon the formal publication of our work.
 
 <details>
 <summary><b>🎬 Click to view the complete list of 100 movies (120 Hours)</b></summary>
@@ -279,5 +279,7 @@ python ProDubber/train_second.py -p Configs/config.yml
 * **Copyright**: All original movie materials (visuals, audio, and characters) are the intellectual property of their respective studios (Disney, Pixar, DreamWorks, etc.). The authors do not own the raw multimedia content.
 
 * **Compliance**: Users are responsible for complying with local copyright laws when using this dataset. 
+
+* **No Original Movie Distribution**: To strictly comply with copyright laws, the original, full-length movie files will NOT be distributed. We only provide  annotations, and multimodal feature vectors intended for academic research.
 
   
