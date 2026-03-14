@@ -2,7 +2,113 @@
 
 # Dataset
 
-We provide a sample dataset for reference. The complete dataset, along with the feature vectors required for training, will be fully open-sourced in the future.
+We provide a sample subset of the DAR-Animation Dataset. The complete dataset (~120 hours, 100 movies), along with the high-dimensional feature vectors required for training, will be fully open-sourced upon the formal publication of our work.
+
+<details>
+<summary><b>🎬 Click to view the complete list of 100 movies (120 Hours)</b></summary>
+1. *The Boss Baby*
+2. *The Boss Baby 2*
+3. *Brave*
+4. *Cloudy with a Chance of Meatballs*
+5. *Cloudy with a Chance of Meatballs 2*
+6. *Coco*
+7. *The Croods*
+8. *The Croods 2*
+9. *How to Train Your Dragon*
+10. *How to Train Your Dragon 2*
+11. *How to Train Your Dragon 3*
+12. *Frozen*
+13. *Frozen II*
+14. *The Incredibles*
+15. *Incredibles 2*
+16. *Inside Out*
+17. *Inside Out 2*
+18. *Meet the Robinsons*
+19. *Moana*
+20. *Wreck-It Ralph*
+21. *Ralph Breaks the Internet*
+22. *Tangled*
+23. *Tinker Bell*
+24. *Tinker Bell and the Lost Treasure*
+25. *Tinker Bell and the Great Fairy Rescue*
+26. *Toy Story*
+27. *Toy Story 2*
+28. *Toy Story 3*
+29. *Toy Story 4*
+30. *Up*
+31. *Zootopia*
+32. *Abominable*
+33. *Sing*
+34. *Sing 2*
+35. *Despicable Me*
+36. *Despicable Me 2*
+37. *Despicable Me 3*
+38. *Despicable Me 4*
+39. *The Secret Life of Pets*
+40. *The Secret Life of Pets 2*
+41. *Antz*
+42. *Bee Movie*
+43. *Big Hero 6*
+44. *Bolt*
+45. *A Bug's Life*
+46. *Captain Underpants: The First Epic Movie*
+47. *Cars*
+48. *Cars 2*
+49. *Cars 3*
+50. *Chicken Little*
+51. *Elemental*
+52. *Encanto*
+53. *Finding Dory*
+54. *Finding Nemo*
+55. *Flushed Away*
+56. *Home*
+57. *Kung Fu Panda*
+58. *Kung Fu Panda 2*
+59. *Kung Fu Panda 3*
+60. *Kung Fu Panda 4*
+61. *Lightyear*
+62. *Luca*
+63. *Madagascar*
+64. *Madagascar: Escape 2 Africa*
+65. *Madagascar 3: Europe's Most Wanted*
+66. *Penguins of Madagascar*
+67. *Megamind*
+68. *Monsters Inc*
+69. *Monsters University*
+70. *Monsters vs. Aliens*
+71. *Mr. Peabody & Sherman*
+72. *Onward*
+73. *Over the Hedge*
+74. *Puss in Boots*
+75. *Puss in Boots: The Last Wish*
+76. *Ratatouille*
+77. *Raya and the Last Dragon*
+78. *Rise of the Guardians*
+79. *Shark Tale*
+80. *Shrek*
+81. *Shrek 2*
+82. *Shrek the Third*
+83. *Shrek Forever After*
+84. *Soul*
+85. *The Bad Guys*
+86. *The Good Dinosaur*
+87. *Trolls*
+88. *Trolls World Tour*
+89. *Turbo*
+90. *Turning Red*
+91. *Minions*
+92. *Minions: The Rise of Gru*
+93. *The Mitchells vs. the Machines*
+94. *Wish*
+95. *Strange World*
+96. *Migration*
+97. *Spies in Disguise*
+98. *Ferdinand*
+99. *Epic*
+100. *Smallfoot*
+</details>
+
+
 
 ```
 cd Dataset/data/
@@ -164,5 +270,14 @@ python ProDubber/train_first.py -p Configs/config_stage1.yml
 python ProDubber/train_second.py -p Configs/config.yml
 ```
 
+---
 
+## ⚖️ Disclaimer
 
+* **Research Purpose Only**: This dataset is provided for non-commercial, academic research purposes only. 
+
+* **Copyright**: All original movie materials (visuals, audio, and characters) are the intellectual property of their respective studios (Disney, Pixar, DreamWorks, etc.). The authors do not own the raw multimedia content.
+
+* **Compliance**: Users are responsible for complying with local copyright laws when using this dataset. 
+
+  
