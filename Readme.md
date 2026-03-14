@@ -5,7 +5,7 @@
 We provide a sample of the DAR-Animation Dataset for reference. The complete set of annotations and high-dimensional feature vectors  for the DAR-Animation Dataset (~120 hours, 100 movies) will be fully open-sourced upon the formal publication of our work.
 
 <details>
-<summary><b>🎬 Click to view the complete list of 100 movies (120 Hours)</b></summary>
+<summary><b>🎬 Click to view the complete list of 100 movies</b></summary>
 <ol>
 <li><i>The Boss Baby</i></li>
 <li><i>The Boss Baby 2</i></li>
