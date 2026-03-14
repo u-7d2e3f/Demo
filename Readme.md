@@ -2,113 +2,113 @@
 
 # Dataset
 
-We provide a sample subset of the DAR-Animation Dataset. The complete dataset (~120 hours, 100 movies), along with the high-dimensional feature vectors required for training, will be fully open-sourced upon the formal publication of our work.
+We provide a sample of the DAR-Animation Dataset. The complete dataset (~120 hours, 100 movies), along with the high-dimensional feature vectors required for training, will be fully open-sourced upon the formal publication of our work.
 
 <details>
 <summary><b>🎬 Click to view the complete list of 100 movies (120 Hours)</b></summary>
-1. *The Boss Baby*
-2. *The Boss Baby 2*
-3. *Brave*
-4. *Cloudy with a Chance of Meatballs*
-5. *Cloudy with a Chance of Meatballs 2*
-6. *Coco*
-7. *The Croods*
-8. *The Croods 2*
-9. *How to Train Your Dragon*
-10. *How to Train Your Dragon 2*
-11. *How to Train Your Dragon 3*
-12. *Frozen*
-13. *Frozen II*
-14. *The Incredibles*
-15. *Incredibles 2*
-16. *Inside Out*
-17. *Inside Out 2*
-18. *Meet the Robinsons*
-19. *Moana*
-20. *Wreck-It Ralph*
-21. *Ralph Breaks the Internet*
-22. *Tangled*
-23. *Tinker Bell*
-24. *Tinker Bell and the Lost Treasure*
-25. *Tinker Bell and the Great Fairy Rescue*
-26. *Toy Story*
-27. *Toy Story 2*
-28. *Toy Story 3*
-29. *Toy Story 4*
-30. *Up*
-31. *Zootopia*
-32. *Abominable*
-33. *Sing*
-34. *Sing 2*
-35. *Despicable Me*
-36. *Despicable Me 2*
-37. *Despicable Me 3*
-38. *Despicable Me 4*
-39. *The Secret Life of Pets*
-40. *The Secret Life of Pets 2*
-41. *Antz*
-42. *Bee Movie*
-43. *Big Hero 6*
-44. *Bolt*
-45. *A Bug's Life*
-46. *Captain Underpants: The First Epic Movie*
-47. *Cars*
-48. *Cars 2*
-49. *Cars 3*
-50. *Chicken Little*
-51. *Elemental*
-52. *Encanto*
-53. *Finding Dory*
-54. *Finding Nemo*
-55. *Flushed Away*
-56. *Home*
-57. *Kung Fu Panda*
-58. *Kung Fu Panda 2*
-59. *Kung Fu Panda 3*
-60. *Kung Fu Panda 4*
-61. *Lightyear*
-62. *Luca*
-63. *Madagascar*
-64. *Madagascar: Escape 2 Africa*
-65. *Madagascar 3: Europe's Most Wanted*
-66. *Penguins of Madagascar*
-67. *Megamind*
-68. *Monsters Inc*
-69. *Monsters University*
-70. *Monsters vs. Aliens*
-71. *Mr. Peabody & Sherman*
-72. *Onward*
-73. *Over the Hedge*
-74. *Puss in Boots*
-75. *Puss in Boots: The Last Wish*
-76. *Ratatouille*
-77. *Raya and the Last Dragon*
-78. *Rise of the Guardians*
-79. *Shark Tale*
-80. *Shrek*
-81. *Shrek 2*
-82. *Shrek the Third*
-83. *Shrek Forever After*
-84. *Soul*
-85. *The Bad Guys*
-86. *The Good Dinosaur*
-87. *Trolls*
-88. *Trolls World Tour*
-89. *Turbo*
-90. *Turning Red*
-91. *Minions*
-92. *Minions: The Rise of Gru*
-93. *The Mitchells vs. the Machines*
-94. *Wish*
-95. *Strange World*
-96. *Migration*
-97. *Spies in Disguise*
-98. *Ferdinand*
-99. *Epic*
-100. *Smallfoot*
+<ol>
+<li><i>The Boss Baby</i></li>
+<li><i>The Boss Baby 2</i></li>
+<li><i>Brave</i></li>
+<li><i>Cloudy with a Chance of Meatballs</i></li>
+<li><i>Cloudy with a Chance of Meatballs 2</i></li>
+<li><i>Coco</i></li>
+<li><i>The Croods</i></li>
+<li><i>The Croods 2</i></li>
+<li><i>How to Train Your Dragon</i></li>
+<li><i>How to Train Your Dragon 2</i></li>
+<li><i>How to Train Your Dragon 3</i></li>
+<li><i>Frozen</i></li>
+<li><i>Frozen II</i></li>
+<li><i>The Incredibles</i></li>
+<li><i>Incredibles 2</i></li>
+<li><i>Inside Out</i></li>
+<li><i>Inside Out 2</i></li>
+<li><i>Meet the Robinsons</i></li>
+<li><i>Moana</i></li>
+<li><i>Wreck-It Ralph</i></li>
+<li><i>Ralph Breaks the Internet</i></li>
+<li><i>Tangled</i></li>
+<li><i>Tinker Bell</i></li>
+<li><i>Tinker Bell and the Lost Treasure</i></li>
+<li><i>Tinker Bell and the Great Fairy Rescue</i></li>
+<li><i>Toy Story</i></li>
+<li><i>Toy Story 2</i></li>
+<li><i>Toy Story 3</i></li>
+<li><i>Toy Story 4</i></li>
+<li><i>Up</i></li>
+<li><i>Zootopia</i></li>
+<li><i>Abominable</i></li>
+<li><i>Sing</i></li>
+<li><i>Sing 2</i></li>
+<li><i>Despicable Me</i></li>
+<li><i>Despicable Me 2</i></li>
+<li><i>Despicable Me 3</i></li>
+<li><i>Despicable Me 4</i></li>
+<li><i>The Secret Life of Pets</i></li>
+<li><i>The Secret Life of Pets 2</i></li>
+<li><i>Antz</i></li>
+<li><i>Bee Movie</i></li>
+<li><i>Big Hero 6</i></li>
+<li><i>Bolt</i></li>
+<li><i>A Bug's Life</i></li>
+<li><i>Captain Underpants: The First Epic Movie</i></li>
+<li><i>Cars</i></li>
+<li><i>Cars 2</i></li>
+<li><i>Cars 3</i></li>
+<li><i>Chicken Little</i></li>
+<li><i>Elemental</i></li>
+<li><i>Encanto</i></li>
+<li><i>Finding Dory</i></li>
+<li><i>Finding Nemo</i></li>
+<li><i>Flushed Away</i></li>
+<li><i>Home</i></li>
+<li><i>Kung Fu Panda</i></li>
+<li><i>Kung Fu Panda 2</i></li>
+<li><i>Kung Fu Panda 3</i></li>
+<li><i>Kung Fu Panda 4</i></li>
+<li><i>Lightyear</i></li>
+<li><i>Luca</i></li>
+<li><i>Madagascar</i></li>
+<li><i>Madagascar: Escape 2 Africa</i></li>
+<li><i>Madagascar 3: Europe's Most Wanted</i></li>
+<li><i>Penguins of Madagascar</i></li>
+<li><i>Megamind</i></li>
+<li><i>Monsters Inc</i></li>
+<li><i>Monsters University</i></li>
+<li><i>Monsters vs. Aliens</i></li>
+<li><i>Mr. Peabody & Sherman</i></li>
+<li><i>Onward</i></li>
+<li><i>Over the Hedge</i></li>
+<li><i>Puss in Boots</i></li>
+<li><i>Puss in Boots: The Last Wish</i></li>
+<li><i>Ratatouille</i></li>
+<li><i>Raya and the Last Dragon</i></li>
+<li><i>Rise of the Guardians</i></li>
+<li><i>Shark Tale</i></li>
+<li><i>Shrek</i></li>
+<li><i>Shrek 2</i></li>
+<li><i>Shrek the Third</i></li>
+<li><i>Shrek Forever After</i></li>
+<li><i>Soul</i></li>
+<li><i>The Bad Guys</i></li>
+<li><i>The Good Dinosaur</i></li>
+<li><i>Trolls</i></li>
+<li><i>Trolls World Tour</i></li>
+<li><i>Turbo</i></li>
+<li><i>Turning Red</i></li>
+<li><i>Minions</i></li>
+<li><i>Minions: The Rise of Gru</i></li>
+<li><i>The Mitchells vs. the Machines</i></li>
+<li><i>Wish</i></li>
+<li><i>Strange World</i></li>
+<li><i>Migration</i></li>
+<li><i>Spies in Disguise</i></li>
+<li><i>Ferdinand</i></li>
+<li><i>Epic</i></li>
+<li><i>Smallfoot</i></li>
+</ol>
 </details>
-
-
 
 ```
 cd Dataset/data/
@@ -270,9 +270,9 @@ python ProDubber/train_first.py -p Configs/config_stage1.yml
 python ProDubber/train_second.py -p Configs/config.yml
 ```
 
----
 
-## ⚖️ Disclaimer
+
+# ⚖️ Disclaimer
 
 * **Research Purpose Only**: This dataset is provided for non-commercial, academic research purposes only. 
 
