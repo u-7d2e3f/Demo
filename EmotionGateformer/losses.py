@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class EmotionGateformerLoss(nn.Module):
-    def __init__(self, w_ccc=1.0, w_delta=5.0, w_huber=1.0, eps=1e-8):
+    def __init__(self, w_ccc=1.0, w_delta=3.0, w_huber=1.0, eps=1e-8):
         super(EmotionGateformerLoss, self).__init__()
         self.w_ccc = w_ccc
         self.w_delta = w_delta
