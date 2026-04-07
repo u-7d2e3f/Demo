@@ -20605,7 +20605,7 @@
           "start_time": 57.92,
           "end_time": 59.92,
           "text": "Come on out, Judy.",
-          "emotion_label": "Happy",
+          "emotion_label": "Disgusted",
           "vad": {
             "valence": 0.5311,
             "arousal": 0.689,
@@ -20656,7 +20656,7 @@
           "start_time": 62.92,
           "end_time": 64.52,
           "text": "I'm not gonna leave you behind. That's not happening.",
-          "emotion_label": "Angry",
+          "emotion_label": "Neutral",
           "vad": {
             "valence": 0.3217,
             "arousal": 0.65,
@@ -20690,7 +20690,7 @@
           "start_time": 66.24,
           "end_time": 67.24,
           "text": "We'll think of something.",
-          "emotion_label": "Fearful",
+          "emotion_label": "Neutral",
           "vad": {
             "valence": 0.3775,
             "arousal": 0.6441,
